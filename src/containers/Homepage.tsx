@@ -1,5 +1,6 @@
 import React from 'react';
 import PersonList from '../components/PersonList';
+import SearchBar from '../components/SearchBar';
 
 export interface IPerson {
   birth_year: string;
@@ -23,45 +24,61 @@ interface IState {
   error?: null;
   isLoaded: boolean;
   items: IPerson[];
+  query: string;
 }
 
 class Homepage extends React.Component<IProps, IState> {
   state = {
-    // error: null,
     isLoaded: false,
     items: [],
+    query: '',
+  };
+
+  onSubmut = async (query: string) => {
+    const response = await fetch(
+      `https://swapi.dev/api/people/?search=${query}`
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        this.setState({
+          isLoaded: true,
+          items: result.results,
+        });
+      });
+    console.log(response);
+    // console.log(query);
   };
 
   componentDidMount() {
-    fetch('https://swapi.dev/api/people/')
+    fetch(`https://swapi.dev/api/people`)
       .then((response) => response.json())
-      .then(
-        (result) => {
-          console.log(result);
-          this.setState({
-            isLoaded: true,
-            items: result.results,
-          });
-        },
-
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          });
-        }
-      );
+      .then((result) => {
+        console.log(result);
+        this.setState({
+          isLoaded: true,
+          items: result.results,
+        });
+      });
   }
 
   render() {
     const { isLoaded, items } = this.state;
-    // if (error) {
-    //   return <div>Error: {error.message}</div>;
-    // } else
-     if (!isLoaded) {
-      return <div>Loading...</div>;
+
+    if (!isLoaded) {
+      return (
+        <div>
+          <SearchBar onSubmut={this.onSubmut} />
+          <div>Loading...</div>
+        </div>
+      );
     } else {
-      return <PersonList items={items} />;
+      return (
+        <div>
+          <SearchBar onSubmut={this.onSubmut} />
+          <PersonList items={items} />
+        </div>
+      );
     }
   }
 }
