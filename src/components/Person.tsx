@@ -22,7 +22,24 @@ interface IProps {
 
 class Person extends React.Component<IProps> {
   render() {
-    return <li>{this.props.item.name}</li>;
+    return (
+      <li className="card">
+        <p>
+          <span>Name: </span>
+          {this.props.item.name}
+        </p>
+        <p>
+          <span>Birth year:</span> {this.props.item.birth_year}
+        </p>
+        <p>
+          <span>Gender:</span> {this.props.item.gender}
+        </p>
+        <p>
+          <span>Hair color: </span>
+          {this.props.item.hair_color}
+        </p>
+      </li>
+    );
   }
 }
 

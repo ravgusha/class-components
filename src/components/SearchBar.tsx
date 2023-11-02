@@ -14,8 +14,6 @@ class SearchBar extends React.Component<IProps, IState> {
     query: '',
   };
 
-
-
   onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ query: event.target.value });
     localStorage.setItem('query', event.target.value);
@@ -29,12 +27,13 @@ class SearchBar extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <form onSubmit={this.onSubmut}>
+      <form onSubmit={this.onSubmut} className="search-bar">
         <input
           type="text"
           id="input"
           value={this.state.query}
           onChange={this.onInputChange}
+          className="search-bar__input"
         />
         <button type="submit">Search</button>
       </form>

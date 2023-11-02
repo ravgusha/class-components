@@ -1,6 +1,7 @@
 import React from 'react';
 import PersonList from '../components/PersonList';
 import SearchBar from '../components/SearchBar';
+import logo from '../assets/logo.svg';
 
 export interface IPerson {
   birth_year: string;
@@ -72,14 +73,16 @@ class Homepage extends React.Component<IProps, IState> {
 
     if (!isLoaded) {
       return (
-        <div>
+        <div className="wrapper">
+          <img alt="logo" src={logo} className="logo" />
           <SearchBar onSubmut={this.onSubmut} />
           <div>Loading...</div>
         </div>
       );
     } else {
       return (
-        <div>
+        <div className="wrapper">
+          <img alt="logo" src={logo} className="logo" />
           <SearchBar onSubmut={this.onSubmut} />
           <PersonList items={items} />
         </div>
