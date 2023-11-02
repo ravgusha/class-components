@@ -14,8 +14,11 @@ class SearchBar extends React.Component<IProps, IState> {
     query: '',
   };
 
+
+
   onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ query: event.target.value });
+    localStorage.setItem('query', event.target.value);
   };
 
   onSubmut = (event: React.FormEvent<HTMLFormElement>) => {

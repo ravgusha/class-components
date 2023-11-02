@@ -47,19 +47,24 @@ class Homepage extends React.Component<IProps, IState> {
         });
       });
     console.log(response);
-    // console.log(query);
   };
 
   componentDidMount() {
-    fetch(`https://swapi.dev/api/people`)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        this.setState({
-          isLoaded: true,
-          items: result.results,
+    if (localStorage.getItem('query')) {
+      const query = localStorage.getItem('query') as string;
+      this.setState({ query });
+      this.onSubmut(query);
+    } else {
+      fetch(`https://swapi.dev/api/people`)
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          this.setState({
+            isLoaded: true,
+            items: result.results,
+          });
         });
-      });
+    }
   }
 
   render() {
