@@ -1,6 +1,7 @@
 import React from 'react';
-import Person, { IPerson } from './Person';
 import shortid from 'shortid';
+
+import Person, { IPerson } from './Person';
 
 interface IProps {
   items: IPerson[];

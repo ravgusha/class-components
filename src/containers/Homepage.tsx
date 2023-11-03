@@ -1,24 +1,11 @@
 import React from 'react';
+
 import PersonList from '../components/PersonList';
 import SearchBar from '../components/SearchBar';
-import logo from '../assets/logo.svg';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { IPerson } from '../components/Person';
 
-export interface IPerson {
-  birth_year: string;
-  eye_color: string;
-  films: string[];
-  gender: string;
-  hair_color: string;
-  height: string;
-  homeworld: string;
-  mass: string;
-  name: string;
-  skin_color: string;
-  species: string[];
-  starships: string[];
-  vehicles: string[];
-}
+import logo from '../assets/logo.svg';
 
 interface IProps {}
 
@@ -68,16 +55,12 @@ class Homepage extends React.Component<IProps, IState> {
   }
 
   onToggleError = () => {
-    // this.setState({ hasError: true });
     this.setState({ items: undefined });
   };
 
   render() {
     const { isLoaded, items } = this.state;
-    // if (this.state.hasError) {
-    //   // Можно отрендерить запасной UI произвольного вида
-    //   return <h1>Что-то пошло не так.</h1>;
-    // }
+
     if (!isLoaded) {
       return (
         <div className="wrapper">
