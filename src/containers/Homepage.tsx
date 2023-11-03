@@ -2,6 +2,7 @@ import React from 'react';
 import PersonList from '../components/PersonList';
 import SearchBar from '../components/SearchBar';
 import logo from '../assets/logo.svg';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 export interface IPerson {
   birth_year: string;
@@ -24,8 +25,9 @@ interface IProps {}
 interface IState {
   error?: null;
   isLoaded: boolean;
-  items: IPerson[];
+  items: IPerson[] | undefined;
   query: string;
+  hasError: boolean;
 }
 
 class Homepage extends React.Component<IProps, IState> {
@@ -33,12 +35,11 @@ class Homepage extends React.Component<IProps, IState> {
     isLoaded: false,
     items: [],
     query: '',
+    hasError: false,
   };
 
   onSubmut = async (query: string) => {
-    const response = await fetch(
-      `https://swapi.dev/api/people/?search=${query}`
-    )
+    await fetch(`https://swapi.dev/api/people/?search=${query}`)
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
@@ -47,7 +48,6 @@ class Homepage extends React.Component<IProps, IState> {
           items: result.results,
         });
       });
-    console.log(response);
   };
 
   componentDidMount() {
@@ -59,7 +59,6 @@ class Homepage extends React.Component<IProps, IState> {
       fetch(`https://swapi.dev/api/people`)
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
           this.setState({
             isLoaded: true,
             items: result.results,
@@ -68,24 +67,37 @@ class Homepage extends React.Component<IProps, IState> {
     }
   }
 
+  onToggleError = () => {
+    // this.setState({ hasError: true });
+    this.setState({ items: undefined });
+  };
+
   render() {
     const { isLoaded, items } = this.state;
-
+    // if (this.state.hasError) {
+    //   // Можно отрендерить запасной UI произвольного вида
+    //   return <h1>Что-то пошло не так.</h1>;
+    // }
     if (!isLoaded) {
       return (
         <div className="wrapper">
           <img alt="logo" src={logo} className="logo" />
           <SearchBar onSubmut={this.onSubmut} />
-          <div>Loading...</div>
+          <div className="loading">Loading...</div>
         </div>
       );
     } else {
       return (
-        <div className="wrapper">
-          <img alt="logo" src={logo} className="logo" />
-          <SearchBar onSubmut={this.onSubmut} />
-          <PersonList items={items} />
-        </div>
+        <ErrorBoundary>
+          <div className="wrapper">
+            <img alt="logo" src={logo} className="logo" />
+            <SearchBar onSubmut={this.onSubmut} />
+            <PersonList items={items} />
+          </div>
+          <button className="error-btn" onClick={this.onToggleError}>
+            Error
+          </button>
+        </ErrorBoundary>
       );
     }
   }

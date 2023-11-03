@@ -9,9 +9,9 @@ interface IProps {
 class PersonList extends React.Component<IProps> {
   render() {
     return (
-      <ul className='card-list'>
+      <ul className="card-list">
         {this.props.items.map((item) => (
-          <Person item={item} key={shortid.generate()}/>
+          <Person item={item} key={shortid.generate()} />
         ))}
       </ul>
     );

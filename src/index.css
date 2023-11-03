@@ -20,18 +20,25 @@ body {
 }
 
 button {
+  font-family: 'Montserrat', sans-serif;
   height: 36px;
   border: 1px solid #ffc500;
   background: #ffc500;
   text-align: center;
-  border-radius: 0 5px 5px 0;
   cursor: pointer;
   font-size: 20px;
-  font-family: 'Montserrat', sans-serif;
+}
+
+.search-btn {
+  border-radius: 0 5px 5px 0;
+}
+
+.loading {
+  padding: 20px 0;
 }
 
 .logo {
-  width: 900px;
+  width: 800px;
 }
 
 .search-bar__input {

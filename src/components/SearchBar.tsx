@@ -35,7 +35,9 @@ class SearchBar extends React.Component<IProps, IState> {
           onChange={this.onInputChange}
           className="search-bar__input"
         />
-        <button type="submit">Search</button>
+        <button type="submit" className="search-btn">
+          Search
+        </button>
       </form>
     );
   }
