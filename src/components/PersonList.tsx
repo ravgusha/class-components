@@ -1,9 +1,9 @@
 import shortid from 'shortid';
 
-import Person, { IPerson } from './Person';
+import Person, { IProduct } from './Person';
 
 interface IProps {
-  items: IPerson[] | undefined;
+  items: IProduct[] | undefined;
 }
 
 const PersonList = ({ items }: IProps) => {

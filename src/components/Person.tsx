@@ -1,39 +1,37 @@
-export interface IPerson {
-  birth_year: string;
-  eye_color: string;
-  films: string[];
-  gender: string;
-  hair_color: string;
-  height: string;
-  homeworld: string;
-  mass: string;
-  name: string;
-  skin_color: string;
-  species: string[];
-  starships: string[];
-  vehicles: string[];
+export interface IProduct {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  discountPercentage: number;
+  rating: number;
+  stock: number;
+  brand: string;
+  category: string;
+  thumbnail: string;
+  images: [];
 }
 
 interface IProps {
-  item: IPerson;
+  item: IProduct;
 }
 
-const Person = ({item}: IProps) => {
+const Person = ({ item }: IProps) => {
   return (
     <li className="card">
       <p>
         <span>Name: </span>
-        {item.name}
+        {item.title}
       </p>
       <p>
-        <span>Birth year:</span> {item.birth_year}
+        <span>Brand:</span> {item.brand}
       </p>
       <p>
-        <span>Gender:</span> {item.gender}
+        <span>Price:</span> {item.price}
       </p>
       <p>
-        <span>Hair color: </span>
-        {item.hair_color}
+        <span>Category </span>
+        {item.category}
       </p>
     </li>
   );
