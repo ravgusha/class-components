@@ -19,7 +19,7 @@
     "shortid": "^2.2.16"
   },
   "devDependencies": {
-    "@types/react": "^18.2.18",
+    "@types/react": "^18.2.35",
     "@types/react-dom": "^18.2.7",
     "@types/shortid": "^0.0.31",
     "@typescript-eslint/eslint-plugin": "^6.9.0",

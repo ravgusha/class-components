@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import PersonList from '../components/PersonList';
 import SearchBar from '../components/SearchBar';
-import ErrorBoundary from '../components/ErrorBoundary';
-import { IProduct } from '../components/Person';
+import Pagination from '../components/Pagination';
+import Card, { IProduct } from '../components/Card';
 
 import logo from '../assets/logo.svg';
 
 const Homepage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState<IProduct[] | undefined>([]);
+  const [items, setItems] = useState<IProduct[]>([]);
 
   const onSubmut = async (query: string) => {
     await fetch(`https://dummyjson.com/products/search?q=${query}`)
@@ -25,7 +24,7 @@ const Homepage = () => {
       const query = localStorage.getItem('query') as string;
       onSubmut(query);
     } else {
-      fetch(`https://dummyjson.com/products?limit=10`)
+      fetch(`https://dummyjson.com/products?limit=100`)
         .then((response) => response.json())
         .then((result) => {
           console.log(result);
@@ -35,9 +34,6 @@ const Homepage = () => {
     }
   }, []);
 
-  // const onToggleError = () => {
-  //   setItems(undefined);
-  // };
 
   if (!isLoaded) {
     return (
@@ -49,16 +45,18 @@ const Homepage = () => {
     );
   } else {
     return (
-      <ErrorBoundary>
-        <div className="wrapper">
-          <img alt="logo" src={logo} className="logo" />
-          <SearchBar onSearchSubmut={onSubmut} />
-          <PersonList items={items} />
-        </div>
-        {/* <button className="error-btn" onClick={onToggleError}>
-          Error
-        </button> */}
-      </ErrorBoundary>
+      <div className="wrapper">
+        <img alt="logo" src={logo} className="logo" />
+        <SearchBar onSearchSubmut={onSubmut} />
+        {/* <PersonList items={items} /> */}
+        <Pagination
+          data={items}
+          RenderComponent={Card}
+          buttonConst={3}
+          contentPerPage={10}
+          siblingCount={1}
+        />
+      </div>
     );
   }
 };
