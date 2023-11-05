@@ -18,11 +18,10 @@ export interface ICard {
 }
 
 const Card = ({ item }: ICard) => {
-  console.log(item);
   const { title, brand, price } = item;
   return (
     <div className="card">
-      <h1>{title}</h1>
+      <h1 className="card-title">{title}</h1>
       <p>Brand: {brand}</p>
       <p>Proce: {price}$</p>
     </div>

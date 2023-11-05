@@ -48,7 +48,6 @@ const Homepage = () => {
       <div className="wrapper">
         <img alt="logo" src={logo} className="logo" />
         <SearchBar onSearchSubmut={onSubmut} />
-        {/* <PersonList items={items} /> */}
         <Pagination
           data={items}
           RenderComponent={Card}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePaginationRange, DOTS } from '../hooks/usePaginationRange';
 import { ICard, IProduct } from './Card';
 
@@ -9,6 +9,7 @@ interface IProps {
   contentPerPage: number;
   siblingCount: number;
 }
+
 const Pagination = ({
   data,
   RenderComponent,
@@ -16,8 +17,14 @@ const Pagination = ({
   contentPerPage,
   siblingCount,
 }: IProps) => {
-  const [totalPageCount] = useState(Math.ceil(data.length / contentPerPage));
   const [currentPage, setCurrentPage] = useState(1);
+console.log(data)
+  const getTotalPageCount = () => {
+    return Math.ceil(data.length / contentPerPage);
+  };
+
+  const totalPageCount = getTotalPageCount();
+
   const paginationRange = usePaginationRange({
     totalPageCount,
     buttonConst,
@@ -36,14 +43,21 @@ const Pagination = ({
     setCurrentPage(pageNumber);
   }
 
+  let paginatedData;
+
   const getPaginatedData = () => {
     const startIndex = currentPage * contentPerPage - contentPerPage;
     const endIndex = startIndex + contentPerPage;
     console.log(data.slice(startIndex, endIndex));
-    return data.slice(startIndex, endIndex);
+    paginatedData = data.slice(startIndex, endIndex);
   };
 
-  const paginatedData = getPaginatedData();
+  getPaginatedData();
+
+  useEffect(() => {
+    getTotalPageCount();
+    getPaginatedData();
+  }, [data, getTotalPageCount]);
 
   return (
     <div>
