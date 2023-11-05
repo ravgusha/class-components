@@ -1,22 +1,19 @@
-import React from 'react';
 import shortid from 'shortid';
 
 import Person, { IPerson } from './Person';
 
 interface IProps {
-  items: IPerson[];
+  items: IPerson[] | undefined;
 }
 
-class PersonList extends React.Component<IProps> {
-  render() {
-    return (
-      <ul className="card-list">
-        {this.props.items.map((item) => (
-          <Person item={item} key={shortid.generate()} />
-        ))}
-      </ul>
-    );
-  }
-}
+const PersonList = ({ items }: IProps) => {
+  return (
+    <ul className="card-list">
+      {items && items.length > 0
+        ? items.map((item) => <Person item={item} key={shortid.generate()} />)
+        : null}
+    </ul>
+  );
+};
 
 export default PersonList;

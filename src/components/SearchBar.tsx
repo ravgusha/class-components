@@ -1,46 +1,36 @@
-import React from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 interface IProps {
-  // eslint-disable-next-line no-unused-vars
-  onSubmut: (query: string) => Promise<void>;
+  onSearchSubmut: (query: string) => Promise<void>;
 }
 
-interface IState {
-  query: string;
-}
+const SearchBar = ({onSearchSubmut}: IProps) => {
+  const [query, setQuery] = useState("");
 
-class SearchBar extends React.Component<IProps, IState> {
-  state = {
-    query: '',
-  };
-
-  onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ query: event.target.value });
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
     localStorage.setItem('query', event.target.value);
   };
 
-  onSubmut = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmut = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(this.state.query);
-    this.props.onSubmut(this.state.query);
+    onSearchSubmut(query);
   };
 
-  render() {
-    return (
-      <form onSubmit={this.onSubmut} className="search-bar">
-        <input
-          type="text"
-          id="input"
-          value={this.state.query}
-          onChange={this.onInputChange}
-          className="search-bar__input"
-        />
-        <button type="submit" className="search-btn">
-          Search
-        </button>
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={onSubmut} className="search-bar">
+      <input
+        type="text"
+        id="input"
+        value={query}
+        onChange={onInputChange}
+        className="search-bar__input"
+      />
+      <button type="submit" className="search-btn">
+        Search
+      </button>
+    </form>
+  );
+};
 
 export default SearchBar;
