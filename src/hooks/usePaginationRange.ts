@@ -7,17 +7,15 @@ const range = (start: number, end: number) => {
 
 interface IProps {
   totalPageCount: number;
-  buttonConst: number;
-  siblingCount: number;
   currentPage: number;
 }
 
 export const usePaginationRange = ({
   totalPageCount,
-  buttonConst,
-  siblingCount,
   currentPage,
 }: IProps) => {
+  const buttonConst = 3;
+  const siblingCount = 1;
   // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
   const totalPageNumbers = buttonConst + 2 * siblingCount;
 

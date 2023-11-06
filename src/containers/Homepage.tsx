@@ -5,10 +5,14 @@ import Pagination from '../components/Pagination';
 import Card, { IProduct } from '../components/Card';
 
 import logo from '../assets/logo.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Homepage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState<IProduct[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const navigate = useNavigate();
 
   const onSubmut = async (query: string) => {
     await fetch(`https://dummyjson.com/products/search?q=${query}`)
@@ -17,6 +21,8 @@ const Homepage = () => {
         setIsLoaded(true);
         setItems(result.products);
       });
+    setCurrentPage(1);
+    navigate(`/search/1`);
   };
 
   useEffect(() => {
@@ -30,10 +36,10 @@ const Homepage = () => {
           console.log(result);
           setIsLoaded(true);
           setItems(result.products);
+          navigate(`/search/1`);
         });
     }
   }, []);
-
 
   if (!isLoaded) {
     return (
@@ -51,9 +57,9 @@ const Homepage = () => {
         <Pagination
           data={items}
           RenderComponent={Card}
-          buttonConst={3}
           contentPerPage={10}
-          siblingCount={1}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
       </div>
     );

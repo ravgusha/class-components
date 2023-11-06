@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { usePaginationRange, DOTS } from '../hooks/usePaginationRange';
 import { ICard, IProduct } from './Card';
+import { useNavigate } from 'react-router-dom';
 
 interface IProps {
   data: IProduct[];
   RenderComponent: ({ item }: ICard) => JSX.Element;
-  buttonConst: number;
   contentPerPage: number;
-  siblingCount: number;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const Pagination = ({
   data,
   RenderComponent,
-  buttonConst,
   contentPerPage,
-  siblingCount,
+  currentPage,
+  setCurrentPage,
 }: IProps) => {
-  const [currentPage, setCurrentPage] = useState(1);
-console.log(data)
   const getTotalPageCount = () => {
     return Math.ceil(data.length / contentPerPage);
   };
@@ -27,27 +26,33 @@ console.log(data)
 
   const paginationRange = usePaginationRange({
     totalPageCount,
-    buttonConst,
-    siblingCount,
     currentPage,
   });
 
+  const navigate = useNavigate();
+
   function goToNextPage() {
     setCurrentPage((page) => page + 1);
+    navigate(`/search/${currentPage + 1}`);
   }
+
   function gotToPreviousPage() {
     setCurrentPage((page) => page - 1);
+    navigate(`/search/${currentPage - 1}`);
   }
+
   function changePage(event: React.MouseEvent<HTMLButtonElement>) {
     const pageNumber = Number(event.currentTarget.textContent);
     setCurrentPage(pageNumber);
+    navigate(`/search/${pageNumber}`);
   }
 
-  let paginatedData;
+  let paginatedData: IProduct[] = [];
 
   const getPaginatedData = () => {
     const startIndex = currentPage * contentPerPage - contentPerPage;
     const endIndex = startIndex + contentPerPage;
+    console.log(data);
     console.log(data.slice(startIndex, endIndex));
     paginatedData = data.slice(startIndex, endIndex);
   };
@@ -57,15 +62,17 @@ console.log(data)
   useEffect(() => {
     getTotalPageCount();
     getPaginatedData();
-  }, [data, getTotalPageCount]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   return (
     <div>
       {/* show the post 10 post at a time*/}
       <div className="card-list">
-        {paginatedData.map((dataItem, index) => (
-          <RenderComponent key={index} item={dataItem} />
-        ))}
+        {paginatedData &&
+          paginatedData.map((dataItem, index) => (
+            <RenderComponent key={index} item={dataItem} />
+          ))}
       </div>
       {/* show the pagiantion
                 it consists of next and previous buttons
