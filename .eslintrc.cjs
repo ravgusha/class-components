@@ -30,15 +30,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    'no-unused-vars': [
-      'error',
-      {
-        vars: 'all',
-        args: 'after-used',
-        ignoreRestSiblings: true,
-        argsIgnorePattern: '^_',
-      },
-    ],
+    'no-unused-vars': 'off',
     'react/react-in-jsx-scope': 'off',
   },
 };

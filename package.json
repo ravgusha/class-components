@@ -14,11 +14,14 @@
   "dependencies": {
     "node": "^18.14.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.18.0",
+    "shortid": "^2.2.16"
   },
   "devDependencies": {
-    "@types/react": "^18.2.18",
+    "@types/react": "^18.2.35",
     "@types/react-dom": "^18.2.7",
+    "@types/shortid": "^0.0.31",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
     "@vitejs/plugin-react": "^4.0.4",
