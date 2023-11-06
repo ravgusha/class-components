@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import SearchBar from '../components/SearchBar';
 import Pagination from '../components/Pagination';
-import Card, { IProduct } from '../components/Card';
+import { IProduct } from '../components/Card';
 
 import logo from '../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
@@ -56,7 +56,6 @@ const Homepage = () => {
         <SearchBar onSearchSubmut={onSubmut} />
         <Pagination
           data={items}
-          RenderComponent={Card}
           contentPerPage={10}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}

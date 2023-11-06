@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { usePaginationRange, DOTS } from '../hooks/usePaginationRange';
-import { ICard, IProduct } from './Card';
+import Card, { IProduct } from './Card';
 import { useNavigate } from 'react-router-dom';
 
 interface IProps {
   data: IProduct[];
-  RenderComponent: ({ item }: ICard) => JSX.Element;
   contentPerPage: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
@@ -13,7 +12,6 @@ interface IProps {
 
 const Pagination = ({
   data,
-  RenderComponent,
   contentPerPage,
   currentPage,
   setCurrentPage,
@@ -71,7 +69,7 @@ const Pagination = ({
       <div className="card-list">
         {paginatedData &&
           paginatedData.map((dataItem, index) => (
-            <RenderComponent key={index} item={dataItem} />
+            <Card key={index} item={dataItem} />
           ))}
       </div>
       {/* show the pagiantion
