@@ -1,29 +1,23 @@
-export interface IProduct {
+export interface IPerson {
   id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: [];
+  name: string;
+  weapon: string;
+  hp: number;
 }
 
 export interface ICard {
-  item: IProduct;
-  key: number;
+  item: IPerson;
+  key: string;
 }
 
 const Card = ({ item }: ICard) => {
-  const { title, brand, price } = item;
+  const { id, name, weapon, hp } = item;
   return (
     <div className="card">
-      <h1 className="card-title">{title}</h1>
-      <p>Brand: {brand}</p>
-      <p>Proce: {price}$</p>
+      <h1 className="card-title">{name}</h1>
+      <p>ID: {id}</p>
+      <p>Weapon: {weapon}</p>
+      <p>Hp: {hp}</p>
     </div>
   );
 };

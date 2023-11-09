@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 interface IProps {
-  onSearchSubmut: (query: string) => Promise<void>;
+  onSearchSubmut: (query?: string | undefined) => void;
 }
 
 const SearchBar = ({onSearchSubmut}: IProps) => {
