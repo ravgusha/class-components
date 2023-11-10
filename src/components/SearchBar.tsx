@@ -1,20 +1,24 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { FormEvent, useContext } from 'react';
+import MyContext from '../MyContext';
 
 interface IProps {
   onSearchSubmut: (query?: string | undefined) => void;
 }
 
-const SearchBar = ({onSearchSubmut}: IProps) => {
-  const [query, setQuery] = useState("");
+const SearchBar = ({ onSearchSubmut }: IProps) => {
+  const { setSearchQuery } = useContext(MyContext);
 
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-    localStorage.setItem('query', event.target.value);
+  const onInputChange = (event: FormEvent<HTMLInputElement>) => {
+    const element = event.currentTarget as HTMLInputElement;
+    const value = element.value;
+
+    setSearchQuery(value);
+    localStorage.setItem('query', value);
   };
 
   const onSubmut = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSearchSubmut(query);
+    onSearchSubmut();
   };
 
   return (
@@ -22,9 +26,8 @@ const SearchBar = ({onSearchSubmut}: IProps) => {
       <input
         type="text"
         id="input"
-        value={query}
-        onChange={onInputChange}
         className="search-bar__input"
+        onChange={onInputChange}
       />
       <button type="submit" className="search-btn">
         Search

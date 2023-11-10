@@ -1,10 +1,10 @@
 import shortid from 'shortid';
-import Card, { IPerson } from './Card';
+import Card from './Card';
+import { useContext } from 'react';
+import MyContext from '../MyContext';
 
-interface ICardList {
-  items: IPerson[];
-}
-const CardList = ({items}: ICardList) => {
+const CardList = () => {
+  const { items } = useContext(MyContext);
   return (
     <ul className="card-list">
       {items.map((item) => (

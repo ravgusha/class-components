@@ -1,13 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import SearchBar from '../components/SearchBar';
 import Pagination from '../components/Pagination';
+import { ItemsPerPageSelect } from '../components/ItemsPerPageSelect';
+import CardList from '../components/CardList';
 import { IPerson } from '../components/Card';
+import MyContext from '../MyContext';
 
 import logo from '../assets/logo.svg';
-import { useNavigate } from 'react-router-dom';
-import CardList from '../components/CardList';
 
 const Homepage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -27,10 +29,9 @@ const Homepage = () => {
     setSearchQuery(query);
 
     fetchCharacters();
-  }, [currentPage, itemsPerPage, searchQuery]);
+  }, [currentPage, itemsPerPage]);
 
   const fetchCharacters = () => {
-    console.log(searchQuery);
     fetch(
       `https://belka.romakhin.ru/api/v1/morkom?page_size=${itemsPerPage}&page=${
         currentPage - 1
@@ -38,7 +39,6 @@ const Homepage = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         setIsLoaded(true);
         setItems(result.results);
         setTotalItems(result.total);
@@ -46,15 +46,10 @@ const Homepage = () => {
       });
   };
 
-  const searchSubmit = (query: string | undefined) => {
-    const searchQuery = query as string;
-    console.log(searchQuery);
-    setSearchQuery(searchQuery);
-  };
-
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const number = Number(e.target.value);
     setItemsPerPage(number);
+    setCurrentPage(1);
   };
 
   const handleNextPageClick = useCallback(() => {
@@ -81,32 +76,34 @@ const Homepage = () => {
     );
   } else {
     return (
-      <div className="wrapper">
-        <img alt="logo" src={logo} className="logo" />
-        <SearchBar onSearchSubmut={searchSubmit} />
-        <select value={itemsPerPage} onChange={handleChange}>
-          <option>5</option>
-          <option>10</option>
-        </select>
-        {items ? (
-          <ul className="card-list">
-            <CardList items={items} />
-          </ul>
-        ) : (
-          'no data'
-        )}
-        {items && (
-          <Pagination
-            onNextPageClick={handleNextPageClick}
-            onPrevPageClick={handlePrevPageClick}
-            disable={{
-              left: currentPage === 1,
-              right: currentPage === getTotalPageCount(totalItems),
-            }}
-            nav={{ current: currentPage, total: getTotalPageCount(totalItems) }}
-          />
-        )}
-      </div>
+      <MyContext.Provider value={{ items, searchQuery, setSearchQuery }}>
+        <div className="wrapper">
+          <img alt="logo" src={logo} className="logo" />
+          <SearchBar onSearchSubmut={fetchCharacters} />
+          <ItemsPerPageSelect itemsPerPage={itemsPerPage} onChange={handleChange} />
+          {items ? (
+            <ul className="card-list">
+              <CardList />
+            </ul>
+          ) : (
+            'no data'
+          )}
+          {items && (
+            <Pagination
+              onNextPageClick={handleNextPageClick}
+              onPrevPageClick={handlePrevPageClick}
+              disable={{
+                left: currentPage === 1,
+                right: currentPage === getTotalPageCount(totalItems),
+              }}
+              nav={{
+                current: currentPage,
+                total: getTotalPageCount(totalItems),
+              }}
+            />
+          )}
+        </div>
+      </MyContext.Provider>
     );
   }
 };
