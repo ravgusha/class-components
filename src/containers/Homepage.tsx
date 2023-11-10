@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 import SearchBar from '../components/SearchBar';
 import Pagination from '../components/Pagination';
@@ -12,26 +13,26 @@ const Homepage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState<IPerson[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
 
   const navigate = useNavigate();
 
-  const ROWS_PER_PAGE = 5;
-
   const getTotalPageCount = (rowCount: number): number =>
-    Math.ceil(rowCount / ROWS_PER_PAGE);
+    Math.ceil(rowCount / itemsPerPage);
 
   useEffect(() => {
     const query = localStorage.getItem('query') as string;
     setSearchQuery(query);
 
     fetchCharacters();
-  }, [currentPage]);
+  }, [currentPage, itemsPerPage, searchQuery]);
 
   const fetchCharacters = () => {
+    console.log(searchQuery);
     fetch(
-      `https://belka.romakhin.ru/api/v1/morkom?page_size=${ROWS_PER_PAGE}&page=${
+      `https://belka.romakhin.ru/api/v1/morkom?page_size=${itemsPerPage}&page=${
         currentPage - 1
       }&search.name=${searchQuery}`
     )
@@ -42,8 +43,18 @@ const Homepage = () => {
         setItems(result.results);
         setTotalItems(result.total);
         navigate(`/search/1`);
-        setSearchQuery('');
       });
+  };
+
+  const searchSubmit = (query: string | undefined) => {
+    const searchQuery = query as string;
+    console.log(searchQuery);
+    setSearchQuery(searchQuery);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const number = Number(e.target.value);
+    setItemsPerPage(number);
   };
 
   const handleNextPageClick = useCallback(() => {
@@ -65,7 +76,6 @@ const Homepage = () => {
     return (
       <div className="wrapper">
         <img alt="logo" src={logo} className="logo" />
-        <SearchBar onSearchSubmut={fetchCharacters} />
         <div className="loading">Loading...</div>
       </div>
     );
@@ -73,7 +83,11 @@ const Homepage = () => {
     return (
       <div className="wrapper">
         <img alt="logo" src={logo} className="logo" />
-        <SearchBar onSearchSubmut={fetchCharacters} />
+        <SearchBar onSearchSubmut={searchSubmit} />
+        <select value={itemsPerPage} onChange={handleChange}>
+          <option>5</option>
+          <option>10</option>
+        </select>
         {items ? (
           <ul className="card-list">
             <CardList items={items} />

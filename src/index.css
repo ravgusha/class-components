@@ -38,7 +38,10 @@ button {
 }
 
 .logo {
-  width: 200px;
+  width: 600px;
+  height: 150px;
+  object-fit: cover;
+  margin: 40px 0;
 }
 
 .search-bar__input {
