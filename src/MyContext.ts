@@ -5,12 +5,14 @@ interface IMyContext {
   items: IPerson[];
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
+  setCurrentPage: Dispatch<SetStateAction<number>>
 }
 
 const defaultState = {
   items: [],
   searchQuery: '',
-  setSearchQuery: () => { }
+  setSearchQuery: () => { },
+  setCurrentPage: () => { }
 };
 
 const MyContext = createContext<IMyContext>(defaultState);

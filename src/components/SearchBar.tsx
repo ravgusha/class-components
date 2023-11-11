@@ -1,24 +1,23 @@
 import { FormEvent, useContext } from 'react';
 import MyContext from '../MyContext';
+import { useNavigate } from 'react-router-dom';
 
-interface IProps {
-  onSearchSubmut: (query?: string | undefined) => void;
-}
-
-const SearchBar = ({ onSearchSubmut }: IProps) => {
-  const { setSearchQuery } = useContext(MyContext);
+const SearchBar = () => {
+  const { setSearchQuery, setCurrentPage } = useContext(MyContext);
+  const navigate = useNavigate();
+  let inputValue = '';
 
   const onInputChange = (event: FormEvent<HTMLInputElement>) => {
     const element = event.currentTarget as HTMLInputElement;
-    const value = element.value;
-
-    setSearchQuery(value);
-    localStorage.setItem('query', value);
+    inputValue = element.value;
   };
 
   const onSubmut = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSearchSubmut();
+    setSearchQuery(inputValue);
+    localStorage.setItem('query', inputValue);
+    navigate(`/search/1`);
+    setCurrentPage(1);
   };
 
   return (

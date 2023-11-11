@@ -17,7 +17,9 @@ const Homepage = () => {
   const [totalItems, setTotalItems] = useState<number>(0);
   const [itemsPerPage, setItemsPerPage] = useState<number>(5);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(
+    localStorage.getItem('query') || ''
+  );
 
   const navigate = useNavigate();
 
@@ -25,11 +27,8 @@ const Homepage = () => {
     Math.ceil(rowCount / itemsPerPage);
 
   useEffect(() => {
-    const query = localStorage.getItem('query') as string;
-    setSearchQuery(query);
-
     fetchCharacters();
-  }, [currentPage, itemsPerPage]);
+  }, [currentPage, itemsPerPage, searchQuery]);
 
   const fetchCharacters = () => {
     fetch(
@@ -76,11 +75,14 @@ const Homepage = () => {
     );
   } else {
     return (
-      <MyContext.Provider value={{ items, searchQuery, setSearchQuery }}>
+      <MyContext.Provider value={{ items, searchQuery, setSearchQuery, setCurrentPage }}>
         <div className="wrapper">
           <img alt="logo" src={logo} className="logo" />
-          <SearchBar onSearchSubmut={fetchCharacters} />
-          <ItemsPerPageSelect itemsPerPage={itemsPerPage} onChange={handleChange} />
+          <SearchBar />
+          <ItemsPerPageSelect
+            itemsPerPage={itemsPerPage}
+            onChange={handleChange}
+          />
           {items ? (
             <ul className="card-list">
               <CardList />
