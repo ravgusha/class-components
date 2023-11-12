@@ -76,7 +76,7 @@ const Homepage = () => {
   } else {
     return (
       <MyContext.Provider value={{ items, searchQuery, setSearchQuery, setCurrentPage }}>
-        <div className="wrapper">
+        <div className="wrapper" data-testid="wrapper">
           <img alt="logo" src={logo} className="logo" />
           <SearchBar />
           <ItemsPerPageSelect
