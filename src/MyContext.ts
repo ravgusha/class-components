@@ -3,9 +3,9 @@ import { IPerson } from './components/Card';
 
 interface IMyContext {
   items: IPerson[];
-  searchQuery: string;
-  setSearchQuery: Dispatch<SetStateAction<string>>;
-  setCurrentPage: Dispatch<SetStateAction<number>>
+  searchQuery?: string;
+  setSearchQuery?: Dispatch<SetStateAction<string>>;
+  setCurrentPage?: Dispatch<SetStateAction<number>>
 }
 
 const defaultState = {

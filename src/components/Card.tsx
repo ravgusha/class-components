@@ -13,7 +13,7 @@ export interface ICard {
 const Card = ({ item }: ICard) => {
   const { id, name, weapon, hp } = item;
   return (
-    <div className="card">
+    <div className="card" data-testid="card">
       <h1 className="card-title">{name}</h1>
       <p>ID: {id}</p>
       <p>Weapon: {weapon}</p>
